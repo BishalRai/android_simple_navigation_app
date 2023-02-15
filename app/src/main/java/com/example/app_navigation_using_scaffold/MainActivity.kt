@@ -39,37 +39,39 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController) {
     var text by remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    ){
+    ) {
         Text(text = "This is home Screen")
-        OutlinedTextField(value = text, onValueChange = {text = it})
-        Button(onClick = { navController.navigate("second/$text") },
-        enabled = text.isNotEmpty()
+        OutlinedTextField(value = text, onValueChange = { text = it })
+        Button(
+            onClick = { navController.navigate("second/$text") },
+            enabled = text.isNotEmpty()
         ) {
-            Text( "To second")
+            Text("To second")
         }
     }
 }
+
 @Composable
-fun NavigationExampleApp(){
+fun NavigationExampleApp() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = "home"
-    ){
-        composable(route = "home"){
+    ) {
+        composable(route = "home") {
             HomeScreen(navController)
         }
         composable(route = "second/{parameter}",
-        arguments = listOf(
-            navArgument("parameter"){
-                type = NavType.StringType
-            }
-        )){
+            arguments = listOf(
+                navArgument("parameter") {
+                    type = NavType.StringType
+                }
+            )) {
             SecondScreen(
                 navController,
                 it.arguments?.getString("parameter")
@@ -77,12 +79,13 @@ fun NavigationExampleApp(){
         }
     }
 }
+
 @Composable
-fun SecondScreen(navController: NavController, parameter: String?){
+fun SecondScreen(navController: NavController, parameter: String?) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(text = "This is Second screen")
         Text(text = "Parameter from Home is $parameter")
-        Button(onClick = {navController.navigateUp()}) {
+        Button(onClick = { navController.navigateUp() }) {
             Text("Back to Home")
         }
     }
